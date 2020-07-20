@@ -1,7 +1,9 @@
 import requests
+from urllib.parse import urlencode
 import os
 import logger
 from datetime import datetime
+import json
 
 
 class account:
@@ -10,6 +12,7 @@ class account:
         self.accountName = accountName
         self.accountType = accountType
         self.rootDir = rootDir
+        self.repos = []
 
     def getAccDir(self):
         self.accDir = os.path.join(
@@ -17,6 +20,22 @@ class account:
         if not os.path.exists(self.accDir):
             os.makedirs(self.accDir)
         return self.accDir
+
+    def getRepositorys(self):
+        response = None
+        while True:
+            if not response:
+                response = requests.get('https://api.github.com/users/' + self.accountName + '/' + "repos",
+                                        auth=(self.accountName, self.getToken()), params=urlencode([('page', 1), ('per_page', 100)]))
+            else:
+                response = requests.get(response.links["next"]["url"])
+            content = json.loads(response.content)
+            data = json.loads(response.content)
+            for repo in data:
+                self.repos += [repo["name"]]
+            if not "last" in response.links:
+                break
+        return self.repos
 
     def __getTokenPath(self):
         return os.path.join(self.getAccDir(), "access", "token.txt")
@@ -30,8 +49,8 @@ class account:
 
     def setToken(self, token, override=False):
         tokenPath = self.__getTokenPath()
-        if not os.path.exists(os.path.join(self.getAccDir(), "access")):
-            os.makedirs(tokenPath)
+        if not os.path.exists(os.path.dirname(tokenPath)):
+            os.makedirs(os.path.dirname(tokenPath))
         if not "".__eq__(self.getToken()) or override:
             with open(tokenPath, "w") as file:
                 file.write(token)

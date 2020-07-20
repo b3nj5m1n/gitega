@@ -8,5 +8,5 @@ class logger:
 
     @staticmethod
     def log(message, type="info"):
-        print(Fore.RED + message)
+        print(message)
 
