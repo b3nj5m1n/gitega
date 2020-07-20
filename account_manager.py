@@ -1,6 +1,7 @@
 import requests
 import os
 import logger
+from datetime import datetime
 
 
 class account:
@@ -35,4 +36,14 @@ class account:
             with open(tokenPath, "w") as file:
                 file.write(token)
         else:
-            self.logger.log("Could not write token.")
+            self.logger.log("Could not write token.", "error")
+
+    def update(self, writeToDisk=True):
+        dataDir = os.path.join(self.getAccDir(), "accountData")
+        if not os.path.exists(dataDir):
+            os.makedirs(dataDir)
+        data = requests.get('https://api.github.com/user',
+                            auth=(self.accountName, self.getToken()))
+        with open(os.path.join(dataDir, datetime.now().strftime("%d_%m_%y__%H_%M_%S")), "wb") as file:
+            file.write(data.content)
+        self.logger.log(str(data.content))
