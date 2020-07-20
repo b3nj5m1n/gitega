@@ -1,6 +1,6 @@
 import os
 import requests
-import account_manager
+import accountManager
 import logger
 from datetime import datetime
 
@@ -27,7 +27,7 @@ class statistics:
         self.logger.log(str(data.content))
 
 
-s = statistics(account_manager.account("b3nj5m1n"))
+s = statistics(accountManager.account("b3nj5m1n"))
 # s.account.update()
 # s.update()
 # s.account.getRepositorys()
