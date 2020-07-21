@@ -21,7 +21,8 @@ class account:
             os.makedirs(self.accDir)
         return self.accDir
 
-    def getRepositorys(self):
+    def getUpstreamRepos(self):
+        # Get all repositorys available on github
         response = None
         while True:
             if not response:
@@ -29,13 +30,20 @@ class account:
                                         auth=(self.accountName, self.getToken()), params=urlencode([('page', 1), ('per_page', 100)]))
             else:
                 response = requests.get(response.links["next"]["url"])
-            content = json.loads(response.content)
             data = json.loads(response.content)
             for repo in data:
                 self.repos += [repo["name"]]
             if not "last" in response.links:
                 break
         return self.repos
+
+    def getLocalRepos(self):
+        # Get all repositorys that have already been saved
+        dataDir = os.path.join(self.getAccDir(),
+                               "statsData")
+        repos = [f for f in os.listdir(
+            dataDir) if os.path.isdir(os.path.join(dataDir, f))]
+        return repos
 
     def __getTokenPath(self):
         return os.path.join(self.getAccDir(), "access", "token.txt")
