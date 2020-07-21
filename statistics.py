@@ -35,4 +35,22 @@ class statistics:
                             auth=(self.account.accountName, self.account.getToken()))
         with open(os.path.join(dataDir, datetime.now().strftime("%d_%m_%y__%H_%M_%S.json")), "wb") as file:
             file.write(data.content)
+        # Top referral sources
+        dataDir = os.path.join(self.account.getAccDir(),
+                               "statsData", repoName, "refSources")
+        if not os.path.exists(dataDir):
+            os.makedirs(dataDir)
+        data = requests.get('https://api.github.com/repos/' + self.account.accountName + '/' + repoName + '/traffic/popular/referrers',
+                            auth=(self.account.accountName, self.account.getToken()))
+        with open(os.path.join(dataDir, datetime.now().strftime("%d_%m_%y__%H_%M_%S.json")), "wb") as file:
+            file.write(data.content)
+        # Top referral paths
+        dataDir = os.path.join(self.account.getAccDir(),
+                               "statsData", repoName, "refPaths")
+        if not os.path.exists(dataDir):
+            os.makedirs(dataDir)
+        data = requests.get('https://api.github.com/repos/' + self.account.accountName + '/' + repoName + '/traffic/popular/paths',
+                            auth=(self.account.accountName, self.account.getToken()))
+        with open(os.path.join(dataDir, datetime.now().strftime("%d_%m_%y__%H_%M_%S.json")), "wb") as file:
+            file.write(data.content)
 
