@@ -3,11 +3,13 @@ import accountManager
 import os
 import json
 from dateutil import parser as dateParser
+import logger
 
 
 class parser:
     def __init__(self, account):
         self.account = account
+        self.logger = logger.logger()
 
     def __connectDB(self):
         self.connection = sqlite3.connect(
@@ -75,8 +77,11 @@ class parser:
                 os.makedirs(parsedDataDir)
             os.rename(report, os.path.join(
                 parsedDataDir, os.path.basename(report)))
-        self.__disconnectDB()
 
     def parse(self):
         self.__connectDB()
         self.__ensureTables()
+        for repo in self.account.getLocalRepos():
+            self.logger.log(f"Parsing {repo}.")
+            self.parseRepo(repo)
+        self.__disconnectDB()

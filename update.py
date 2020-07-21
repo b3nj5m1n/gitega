@@ -10,8 +10,7 @@ args = argParser.parse_args()
 account = accountManager.account(args.name)
 stats = statistics.statistics(account)
 
-# stats.updateAllRepos()
+stats.updateAllRepos()
 
 parser = parser.parser(account)
 parser.parse()
-parser.parseRepo("dotfiles")
