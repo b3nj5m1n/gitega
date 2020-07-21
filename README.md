@@ -18,6 +18,10 @@ Run addAccount.py to add a new account:
 
 ## Update data
 
+Use update.sh to automatically update all your accounts and send a report to you via email. Call the script with the path to your .gitega directory and your email (Will be used to send & receive, requires you to have msmtp set up)
+Put something like this (This one will run at 17:00 every day) in your crontab file (Using crontab -e):
+`0 17 * * * bash /home/YourUserName/Documents/Github/gitega/update.sh "/home/YourUserName/.gitega" "YourEmailAdress"`
+
 Regularly run update.py to update all traffic data for all repositorys of an account.
 `python update.py --name YourUserName`
 
