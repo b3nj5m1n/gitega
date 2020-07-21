@@ -49,10 +49,11 @@ class parser:
                     VALUES ('{date}', '{count}', '{uniq}') ''')
                 self.cursor.execute(
                     f'''UPDATE '{repoName}' SET viewsCount = '{count}', viewsUniq = '{uniq}' WHERE time ='{date}' ''')
-            if not os.path.exists(parsedDataDir):
-                os.makedirs(parsedDataDir)
-            os.rename(report, os.path.join(
-                parsedDataDir, os.path.basename(report)))
+            if keepBackup:
+                if not os.path.exists(parsedDataDir):
+                    os.makedirs(parsedDataDir)
+                os.rename(report, os.path.join(
+                    parsedDataDir, os.path.basename(report)))
         # Clones
         dataDir = os.path.join(self.account.getAccDir(),
                                "statsData", repoName, "clones")
@@ -73,10 +74,11 @@ class parser:
                     VALUES ('{date}', '{count}', '{uniq}') ''')
                 self.cursor.execute(
                     f'''UPDATE '{repoName}' SET clonesCount = '{count}', clonesUniq = '{uniq}' WHERE time ='{date}' ''')
-            if not os.path.exists(parsedDataDir):
-                os.makedirs(parsedDataDir)
-            os.rename(report, os.path.join(
-                parsedDataDir, os.path.basename(report)))
+            if keepBackup:
+                if not os.path.exists(parsedDataDir):
+                    os.makedirs(parsedDataDir)
+                os.rename(report, os.path.join(
+                    parsedDataDir, os.path.basename(report)))
 
     def parse(self):
         self.__connectDB()
