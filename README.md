@@ -14,7 +14,16 @@ Generate a personal access token (Settings -> Developer Settings -> Personal Acc
 ## Add a new account
 
 Run addAccount.py to add a new account:
-`addAccount.py --name YourUserName --token YourAccessToken`
+`python addAccount.py --name YourUserName --token YourAccessToken`
+
+## Update data
+
+Regularly run update.py to update all traffic data for all repositorys of an account.
+`python update.py --name YourUserName`
+
+## Parse data
+
+Running parser.py will parse all new collected stats data and save it to an sql lite database.
 
 ## Save location
 
