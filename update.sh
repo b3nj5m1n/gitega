@@ -13,8 +13,7 @@ output="$output\n"
 for account in $(find "$gitegaPath/" -maxdepth 1 ! -path . -type d -printf '%P\n' | sed 's/-github//g');
 do
     output="$output\n\n$account\n"
-    output="$output$(python update.py --name "$account")"
+    output="$output$(python update.py --name "$account" --rootDir "$gitegaPath")"
 done
 
 echo -e "Subject: Github stats update\r\n\r\n$output" | msmtp --from="$email" -t "$email"
-
