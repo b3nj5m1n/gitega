@@ -77,10 +77,16 @@ python addAccount.py --name YourUserName --token YourAccessToken
 
 Use update.sh to automatically update all your accounts and send a report to you via email. Call the script with the path to your .gitega directory and your email (Will be used to send & receive, requires you to have msmtp set up) Put something like this (This one will run at 17:00 every day) in your crontab file (Using crontab -e): `0 17 * * * bash /home/YourUserName/Documents/Github/gitega/update.sh "/home/YourUserName/.gitega" "YourEmailAdress"`
 
-Regularly run update.py to update all traffic data for all repositorys of an account. python update.py --name YourUserName
+Regularly run update.py to update all traffic data for all repository of an account. python update.py --name YourUserName
 
-This will also parse the data and store it in an sql lite database.
+This will also parse the data and store it in an SQL lite database.
 
+
+You can create a graph with all the data for a specific repository like this:
+```bash
+/home/YourUserName/Documents/Github/gitega/export.sh "/home/YourUserName/.gitega" "YourUserName" "RespositoryName" "/home/YourUserName/.gitega/YourUserName-github"
+```
+This will create two files, `data.csv` holding all the data for that repository in a csv file, and `graph.png`, which requires gnuplot to be installed.
 
 
 <!-- CONTRIBUTING -->
