@@ -28,7 +28,6 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project)
-  * [Built With](#built-with)
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
@@ -41,14 +40,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]]()
-
 Regularly execute a python script to keep a local copy of the stats of all your public github repos.
-
-### Built With
-* [Python](https://www.python.org/)
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -83,7 +75,7 @@ Navigate into the directory and add an account:
 python addAccount.py --name YourUserName --token YourAccessToken
 ```
 
-Use update.sh to automatically update all your accounts and send a report to you via email. Call the script with the path to your .gitega directory and your email (Will be used to send & receive, requires you to have msmtp set up) Put something like this (This one will run at 17:00 every day) in your crontab file (Using crontab -e): 0 17 * * * bash /home/YourUserName/Documents/Github/gitega/update.sh "/home/YourUserName/.gitega" "YourEmailAdress"
+Use update.sh to automatically update all your accounts and send a report to you via email. Call the script with the path to your .gitega directory and your email (Will be used to send & receive, requires you to have msmtp set up) Put something like this (This one will run at 17:00 every day) in your crontab file (Using crontab -e): `0 17 * * * bash /home/YourUserName/Documents/Github/gitega/update.sh "/home/YourUserName/.gitega" "YourEmailAdress"`
 
 Regularly run update.py to update all traffic data for all repositorys of an account. python update.py --name YourUserName
 
