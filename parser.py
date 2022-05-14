@@ -38,22 +38,27 @@ class parser:
         for report in reports:
             # Open one json file at a time, move it to .parsed directory after parsing
             reportFile = open(report, "r")
-            reportData = json.load(reportFile)
-            reportFile.close()
-            for timestamp in reportData["views"]:
-                date = dateParser.parse(timestamp["timestamp"])
-                count = timestamp["count"]
-                uniq = timestamp["uniques"]
-                self.cursor.execute(
-                    f'''INSERT OR IGNORE INTO '{repoName}' (time, viewsCount, viewsUniq)
-                    VALUES ('{date}', '{count}', '{uniq}') ''')
-                self.cursor.execute(
-                    f'''UPDATE '{repoName}' SET viewsCount = '{count}', viewsUniq = '{uniq}' WHERE time ='{date}' ''')
-            if keepBackup:
-                if not os.path.exists(parsedDataDir):
-                    os.makedirs(parsedDataDir)
-                os.rename(report, os.path.join(
-                    parsedDataDir, os.path.basename(report)))
+            try:
+                reportData = json.load(reportFile)
+                reportFile.close()
+                for timestamp in reportData["views"]:
+                    date = dateParser.parse(timestamp["timestamp"])
+                    count = timestamp["count"]
+                    uniq = timestamp["uniques"]
+                    self.cursor.execute(
+                        f'''INSERT OR IGNORE INTO '{repoName}' (time, viewsCount, viewsUniq)
+                        VALUES ('{date}', '{count}', '{uniq}') ''')
+                    self.cursor.execute(
+                        f'''UPDATE '{repoName}' SET viewsCount = '{count}', viewsUniq = '{uniq}' WHERE time ='{date}' ''')
+                if keepBackup:
+                    if not os.path.exists(parsedDataDir):
+                        os.makedirs(parsedDataDir)
+                    os.rename(report, os.path.join(
+                        parsedDataDir, os.path.basename(report)))
+            except json.JSONDecodeError as err:
+                print(f"There was an error parsing views for {report}")
+            except KeyError as err:
+                print(f"There was an error parsing views for {report}")
         # Clones
         dataDir = os.path.join(self.account.getAccDir(),
                                "statsData", repoName, "clones")
@@ -63,22 +68,27 @@ class parser:
         for report in reports:
             # Open one json file at a time, move it to .parsed directory after parsing
             reportFile = open(report, "r")
-            reportData = json.load(reportFile)
-            reportFile.close()
-            for timestamp in reportData["clones"]:
-                date = dateParser.parse(timestamp["timestamp"])
-                count = timestamp["count"]
-                uniq = timestamp["uniques"]
-                self.cursor.execute(
-                    f'''INSERT OR IGNORE INTO '{repoName}' (time, clonesCount, clonesUniq)
-                    VALUES ('{date}', '{count}', '{uniq}') ''')
-                self.cursor.execute(
-                    f'''UPDATE '{repoName}' SET clonesCount = '{count}', clonesUniq = '{uniq}' WHERE time ='{date}' ''')
-            if keepBackup:
-                if not os.path.exists(parsedDataDir):
-                    os.makedirs(parsedDataDir)
-                os.rename(report, os.path.join(
-                    parsedDataDir, os.path.basename(report)))
+            try:
+                reportData = json.load(reportFile)
+                reportFile.close()
+                for timestamp in reportData["clones"]:
+                    date = dateParser.parse(timestamp["timestamp"])
+                    count = timestamp["count"]
+                    uniq = timestamp["uniques"]
+                    self.cursor.execute(
+                        f'''INSERT OR IGNORE INTO '{repoName}' (time, clonesCount, clonesUniq)
+                        VALUES ('{date}', '{count}', '{uniq}') ''')
+                    self.cursor.execute(
+                        f'''UPDATE '{repoName}' SET clonesCount = '{count}', clonesUniq = '{uniq}' WHERE time ='{date}' ''')
+                if keepBackup:
+                    if not os.path.exists(parsedDataDir):
+                        os.makedirs(parsedDataDir)
+                    os.rename(report, os.path.join(
+                        parsedDataDir, os.path.basename(report)))
+            except json.JSONDecodeError as err:
+                print(f"There was an error parsing clones for {report}")
+            except KeyError as err:
+                print(f"There was an error parsing clones for {report}")
 
     def parse(self):
         self.__connectDB()
